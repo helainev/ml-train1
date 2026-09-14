@@ -1,30 +1,20 @@
-'''
-Давайте создадим простое API с тремя ручками: одна для предсказания выживания (/predict), 
-другая для получения количества сделанных запросов (/stats), и третья для проверки работы API (/health).
-
-Шаг 1: Установка необходимых библиотек
-Убедитесь, что у вас установлены необходимые библиотеки:
-pip install fastapi uvicorn pydantic scikit-learn pandas
-
-Шаг 2: Создание app_api.py
-Шаг 3: Запустите ваше приложение: python app_api.py
-Шаг 4: Тестирование API
-Теперь вы можете протестировать ваше API с помощью curl или любого другого инструмента для отправки HTTP-запросов.
-
-Проверка работы API (/health)
-curl -X GET http://127.0.0.1:5000/health
-curl -X GET http://127.0.0.1:5000/stats
-curl -X POST http://127.0.0.1:5000/predict_model -H "Content-Type: application/json" -d "{\"Pclass\": 3, \"Age\": 22.0, \"Fare\": 7.2500}"
-'''
-
+import streamlit as st
+import requests
+import json
+from requests.exceptions import ConnectionError, Timeout, RequestException, JSONDecodeError
 from fastapi import FastAPI, Request, HTTPException
 import pickle
 import pandas as pd
-from pydantic import BaseModel
+from pydantic import BaseModel, Field, ValidationError
+from fastapi.responses import JSONResponse
+import os
 
 app = FastAPI()
 
 # Загрузка модели из файла pickle
+if not os.path.exists('model.pkl'):
+    raise RuntimeError("model.pkl not found. Please train the model first.")
+
 with open('model.pkl', 'rb') as f:
     model = pickle.load(f)
 
@@ -33,10 +23,9 @@ request_count = 0
 
 # Модель для валидации входных данных
 class PredictionInput(BaseModel):
-    Pclass: int
-    Age: float
-    Fare: float
-
+    Pclass: int = Field(gt=0, le=3, description="Ticket class (1-3)")
+    Age: float = Field(gt=0, le=120, description="Age (0-120)")
+    Fare: float = Field(gt=0, description="Fare (must be positive)")
 @app.get("/stats")
 def stats():
     return {"request_count": request_count}
@@ -50,6 +39,7 @@ def predict_model(input_data: PredictionInput):
     global request_count
     request_count += 1
 
+    try:
     # Создание DataFrame из данных
     new_data = pd.DataFrame({
         'Pclass': [input_data.Pclass],
@@ -64,6 +54,8 @@ def predict_model(input_data: PredictionInput):
     result = "Survived" if predictions[0] == 1 else "Not Survived"
 
     return {"prediction": result}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Prediction error: {str(e)}")
 
 if __name__ == '__main__':
     import uvicorn
