@@ -6,7 +6,7 @@ A production-ready machine learning microservice built with **Python**, **FastAP
 
 ## 🛠️ Tech Stack & Architecture
 
-- **Core:** Python 3.12+
+- **Core:** Python 3.14+
 - **Machine Learning:** Scikit-Learn, Pandas
 - **API Framework:** FastAPI, Pydantic, Uvicorn
 - **Package Management:** `uv` (modern, ultra-fast Python bundling)
@@ -24,8 +24,8 @@ Make sure you have `uv` installed. If not, install it via: `pip install uv` or `
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com
-   cd ml-train1
+   git clone https://github.com/helainev/ml-train1.git
+  
    ```
 
 2. **Create a virtual environment and sync dependencies:**
@@ -36,20 +36,20 @@ Make sure you have `uv` installed. If not, install it via: `pip install uv` or `
 
 3. **Run the API server:**
    ```bash
-   uv run uvicorn app_api:app --host 0.0.0.0 --port 8000 --reload
+   uv run uvicorn app_api:app --host 0.0.0.0 --port 5000 --reload
    ```
-   *The server will be available at `http://localhost:8000`*
+   *The server will be available at `http://localhost:5000`*
 
 ### Option 2: Run with Docker 🐳
 
 1. **Build the Docker image:**
    ```bash
-   docker build -t titanic-ml-api .
+   docker build -t titanic-ml-api:latest
    ```
 
 2. **Run the container:**
    ```bash
-   docker run -d -p 8000:8000 --name titanic-service titanic-ml-api
+   docker run -d --name titanic-ml-api -p 5000:5000 titanic-ml-api:latest 
    ```
 
 ---
@@ -57,7 +57,7 @@ Make sure you have `uv` installed. If not, install it via: `pip install uv` or `
 ## 📡 API Documentation & Endpoints
 
 Once the application is running, you can access the interactive Swagger UI documentation at:
-🔗 **`http://localhost:8000/docs`**
+🔗 **`http://localhost:5000/docs`**
 
 ### 1. Health Check
 Verifies that the API and the ML model are properly loaded and working.
@@ -81,10 +81,7 @@ Submits passenger features to the Decision Tree model to get a survival predicti
   ```json
   {
     "Pclass": 3,
-    "Sex": "male",
     "Age": 22.0,
-    "SibSp": 1,
-    "Parch": 0,
     "Fare": 7.25
   }
   ```

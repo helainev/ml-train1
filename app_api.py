@@ -1,7 +1,10 @@
 """
+версия для докера - копия файла 04_app_api _var1.py с измененным хостом
+
 создаем api c тремя ручками: одна для предсказания выживания (/predict),
 другая для получения количества сделанных запросов (/stats),
 и третья, для проверки работы API (/health)
+
 """
 
 from fastapi import FastAPI, Request, HTTPException
@@ -55,24 +58,6 @@ def predict_model(input_data: PredictionInput):
     
 if __name__ == '__main__':
     import uvicorn
-    # пока для проверки запускаем на локальном компьютере, поэтому
-    # host указываем локальный, у всем он один 127.0.0.1, порт может быть любой, какой зададим
     # для версии программы для докера хост указываем другой "0.0.0.0"
     # поэтому для докера сформируем аналогичный файл и назовем его app_api.py
-    uvicorn.run(app, host="127.0.0.1", port=5000) 
-
-"""
-
-Проверка работы API через curl  (Test1), в новом терминале запускаем:
-curl -X GET http:/127.0.0.1:5000/health  
-      получаем результат {"status":"OK"}
-curl -X GET http:/127.0.0.1:5000/stats
-      получаем результат {"request_count":0}
-curl -X POST http:/127.0.0.1:5000/predict_model -H "Content-Type: application/json" -d "{\"Pclass\": 3, \"Age\": 22.0, \"Fare\": 7.2500}"
-      получаем результат {"prediction":"Not Survived"}
-      затем уменьшаем возраст 2 года - ребенок
-curl -X POST http:/127.0.0.1:5000/predict_model -H "Content-Type: application/json" -d "{\"Pclass\": 3, \"Age\": 2.0, \"Fare\": 7.2500}"
-      получаем результат {"prediction":"Survived"}   
-curl -X GET http:/127.0.0.1:5000/stats
-      получаем результат {"request_count":2}
-"""
+    uvicorn.run(app, host="0.0.0.0", port=5000) 
