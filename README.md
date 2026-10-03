@@ -49,6 +49,13 @@ Make sure you have `uv` installed. If not, install it via: `pip install uv` or `
 
 2. **Run the container:**
    ```bash
+   #если ранее был уже запущен такой контейнер, его можно остановить
+   docker stop titanic-ml-api
+   #если ранее был уже создан такой контейнер, его можно удалить
+   docker rm -f titanic-ml-api
+   #можно проверить наличие контейнеров
+   docker ps -a
+
    #:5000 - номер порта, указанный в коде, 500 - порт в контейнере
    docker run -d --name titanic-ml-api -p 500:5000 titanic-ml-api:latest 
    ```
