@@ -44,12 +44,13 @@ Make sure you have `uv` installed. If not, install it via: `pip install uv` or `
 
 1. **Build the Docker image:**
    ```bash
-   docker build -t titanic-ml-api:latest
-   ```
+   docker build -t titanic-ml-api:latest .
+   ```  
 
 2. **Run the container:**
    ```bash
-   docker run -d --name titanic-ml-api -p 5000:5000 titanic-ml-api:latest 
+   #:5000 - номер порта, указанный в коде, 500 - порт в контейнере
+   docker run -d --name titanic-ml-api -p 500:5000 titanic-ml-api:latest 
    ```
 
 ---
