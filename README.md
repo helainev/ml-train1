@@ -6,7 +6,7 @@ A production-ready machine learning microservice built with **Python**, **FastAP
 
 ## 🛠️ Tech Stack & Architecture
 
-- **Core:** Python 3.12+
+- **Core:** Python 3.14+
 - **Machine Learning:** Scikit-Learn, Pandas
 - **API Framework:** FastAPI, Pydantic, Uvicorn
 - **Package Management:** `uv` (modern, ultra-fast Python bundling)
@@ -16,19 +16,17 @@ A production-ready machine learning microservice built with **Python**, **FastAP
 
 ## 🚀 Getting Started & Installation
 
-  ```bash
+  ```bash  
  docker compose up -d
 
-#если ранее был уже запущен такой контейнер, его можно остановить
-   docker stop titanic-ml-backend
-   docker stop titanic-ml-frontend
-# если ранее был уже создан такой контейнер, его можно удалить
-   docker rm -f titanic-ml-backend
-   docker rm -f titanic-ml-frontend
 # остановить все контейнеры
    docker compose down  
-# удалить образы с очиской кэша   
+# остановить и удалить образы с очиской кэша   
    docker compose down --rmi local -v
 # можно проверить наличие контейнеров
    docker ps -a
   ```
+## 📡 Api Endpoints
+
+Once the application is running, you can access the interactive 
+🔗 **`http://127.0.0.1:8501`**
