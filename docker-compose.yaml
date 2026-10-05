@@ -1,0 +1,23 @@
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: 02_backend/Dockerfile
+    image: titanic-ml-backend:latest
+    container_name: titanic-ml-backend
+    #ports:
+    #  - "500:5000"
+    # порт бэкенда наружу не указываем, для тестирования можно указать
+    volumes:
+      - ./02_backend/model.pkl:/app/model.pkl
+
+  frontend:
+    build:
+      context: .
+      dockerfile: 03_frontend/Dockerfile
+    image: titanic-ml-frontend:latest
+    container_name: titanic-ml-frontend
+    ports:
+      - "8501:8501"
+    volumes:
+      - ./03_frontend/streamlit_app.py:/app/streamlit_app.py

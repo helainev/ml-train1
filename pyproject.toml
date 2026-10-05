@@ -21,3 +21,10 @@ dependencies = [
 
 [tool.uv]
 package = false
+
+[tool.uv.workspace]
+members = [
+    "01_train",
+    "02_backend",
+    "03_frontend",
+]

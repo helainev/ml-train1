@@ -1,0 +1,26 @@
+# Виртуальное окружение и менеджер пакетов uv
+.venv/
+.uv/
+uv.lock
+
+# Кэш Python и инструментов сборки
+**/__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.ipynb_checkpoints/
+
+# Тетради Jupyter и документация
+*.ipynb
+*.md
+
+# Локальные файлы данных и обученные модели (чтобы не раздувать образ)
+*.csv
+#*.pkl
+
+# Настройки Git и среды разработки
+.git/
+.gitignore
+.vscode/
+.idea/

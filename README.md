@@ -6,7 +6,7 @@ A production-ready machine learning microservice built with **Python**, **FastAP
 
 ## 🛠️ Tech Stack & Architecture
 
-- **Core:** Python 3.14+
+- **Core:** Python 3.12+
 - **Machine Learning:** Scikit-Learn, Pandas
 - **API Framework:** FastAPI, Pydantic, Uvicorn
 - **Package Management:** `uv` (modern, ultra-fast Python bundling)
@@ -16,108 +16,19 @@ A production-ready machine learning microservice built with **Python**, **FastAP
 
 ## 🚀 Getting Started & Installation
 
-You can run this microservice either locally using the `uv` package manager or inside an isolated Docker container.
+  ```bash
+ docker compose up -d
 
-### Option 1: Local Deployment with `uv`
-
-Make sure you have `uv` installed. If not, install it via: `pip install uv` or `curl -LsSf https://astral.sh | sh`.
-
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com/helainev/ml-train1.git
-  
-   ```
-
-2. **Create a virtual environment and sync dependencies:**
-   ```bash
-   uv venv
-   uv pip install -r requirements.txt
-   ```
-
-3. **Run the API server:**
-   ```bash
-   uv run uvicorn app_api:app --host 0.0.0.0 --port 5000 --reload
-   ```
-   *The server will be available at `http://localhost:5000`*
-
-### Option 2: Run with Docker 🐳
-
-1. **Build the Docker image:**
-   ```bash
-   docker build -t titanic-ml-api:latest .
-   ```  
-
-2. **Run the container:**
-   ```bash
-   #если ранее был уже запущен такой контейнер, его можно остановить
-   docker stop titanic-ml-api
-   #если ранее был уже создан такой контейнер, его можно удалить
-   docker rm -f titanic-ml-api
-   #можно проверить наличие контейнеров
+#если ранее был уже запущен такой контейнер, его можно остановить
+   docker stop titanic-ml-backend
+   docker stop titanic-ml-frontend
+# если ранее был уже создан такой контейнер, его можно удалить
+   docker rm -f titanic-ml-backend
+   docker rm -f titanic-ml-frontend
+# остановить все контейнеры
+   docker compose down  
+# удалить образы с очиской кэша   
+   docker compose down --rmi local -v
+# можно проверить наличие контейнеров
    docker ps -a
-
-   #:5000 - номер порта, указанный в коде, 500 - порт в контейнере
-   docker run -d --name titanic-ml-api -p 500:5000 titanic-ml-api:latest 
-   ```
-
----
-
-## 📡 API Documentation & Endpoints
-
-Once the application is running, you can access the interactive Swagger UI documentation at:
-🔗 **`http://localhost:5000/docs`**
-
-### 1. Health Check
-Verifies that the API and the ML model are properly loaded and working.
-
-- **Method:** `GET`
-- **Endpoint:** `/health`
-- **Response Example (`200 OK`):**
-  ```json
-  {
-    "status": "healthy",
-    "model_loaded": true
-  }
   ```
-
-### 2. Predict Passenger Survival
-Submits passenger features to the Decision Tree model to get a survival prediction.
-
-- **Method:** `POST`
-- **Endpoint:** `/predict`
-- **Payload Example:**
-  ```json
-  {
-    "Pclass": 3,
-    "Age": 22.0,
-    "Fare": 7.25
-  }
-  ```
-- **Response Example (`200 OK`):**
-  ```json
-  {
-    "passenger_id": "optional_id",
-    "survived": 0,
-    "probability": 0.125
-  }
-  ```
-
-### 3. Service Statistics
-Returns runtime analytics showcasing the usage metrics of the microservice.
-
-- **Method:** `GET`
-- **Endpoint:** `/stats`
-- **Response Example (`200 OK`):**
-  ```json
-  {
-    "total_predictions_served": 142,
-    "uptime_seconds": 3600
-  }
-  ```
-
----
-
-## 📈 Model Training Info
-The underlying model is a **Decision Tree Classifier** trained on the classic `titanic.csv` dataset. The training pipeline handles missing data imputation, categorical feature encoding (`Sex`, etc.), and exports the final binary model artifact into a deployment-ready serialized format (`model.pkl`).
-
-*To re-run the training pipeline locally, check out the `train.ipynb` Jupyter Notebook.*
